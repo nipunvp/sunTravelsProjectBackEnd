@@ -9,14 +9,14 @@ public class RoomTypeDto {
 
     // Getters and Setters...
 
-    public RoomTypeDto( Long roomTypeId, String roomTypeName, float basePrice, int numberOfRooms, int maxAdults )
-    {
-        this.roomTypeId = roomTypeId;
-        this.roomTypeName = roomTypeName;
-        this.basePrice = basePrice;
-        this.numberOfRooms = numberOfRooms;
-        this.maxAdults = maxAdults;
-    }
+//    public RoomTypeDto( Long roomTypeId, String roomTypeName, float basePrice, int numberOfRooms, int maxAdults )
+//    {
+//        this.roomTypeId = roomTypeId;
+//        this.roomTypeName = roomTypeName;
+//        this.basePrice = basePrice;
+//        this.numberOfRooms = numberOfRooms;
+//        this.maxAdults = maxAdults;
+//    }
 
     public Long getRoomTypeId()
     {
