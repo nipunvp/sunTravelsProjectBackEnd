@@ -7,9 +7,19 @@ import com.example.demo_web.model.RoomType;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class to convert DTOs to entity objects.
+ * This class provides methods to convert {@link HotelContractRequestDto} and {@link HotelContractRequestDto.RoomTypeDto}
+ * to their corresponding {@link HotelContract} and {@link RoomType} entities.
+ */
 public class DtoToEntityConverter {
 
-    // Convert HotelContractRequestDto to HotelContract entity
+    /**
+     * Converts a {@link HotelContractRequestDto} to a {@link HotelContract} entity.
+     *
+     * @param requestDto the HotelContractRequestDto to convert
+     * @return the corresponding HotelContract entity
+     */
     public static HotelContract toEntity(HotelContractRequestDto requestDto) {
         HotelContract hotelContract = new HotelContract();
         hotelContract.setHotelName(requestDto.getHotelName());
@@ -17,6 +27,7 @@ public class DtoToEntityConverter {
         hotelContract.setEndDate(requestDto.getEndDate());
         hotelContract.setMarkup(requestDto.getMarkup());
 
+        // Convert the list of room types from the DTO to entities
         List<RoomType> roomTypes = requestDto.getRoomTypes().stream()
                                              .map(roomTypeDto -> toEntity(roomTypeDto, hotelContract))
                                              .collect(Collectors.toList());
@@ -25,7 +36,13 @@ public class DtoToEntityConverter {
         return hotelContract;
     }
 
-    // Convert RoomTypeDto to RoomType entity
+    /**
+     * Converts a {@link HotelContractRequestDto.RoomTypeDto} to a {@link RoomType} entity.
+     *
+     * @param roomTypeDto the RoomTypeDto to convert
+     * @param hotelContract the associated HotelContract entity (foreign key)
+     * @return the corresponding RoomType entity
+     */
     public static RoomType toEntity(HotelContractRequestDto.RoomTypeDto roomTypeDto, HotelContract hotelContract) {
         RoomType roomType = new RoomType();
         roomType.setRoomtypeName(roomTypeDto.getRoomTypeName());

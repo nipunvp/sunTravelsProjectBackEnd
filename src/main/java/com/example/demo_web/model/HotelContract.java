@@ -1,101 +1,183 @@
 package com.example.demo_web.model;
 
-import com.example.demo_web.dto.RoomTypeDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Represents a hotel contract entity in the system.
+ *
+ * <p>This class encapsulates the details of a hotel contract, including the hotel name,
+ * the contract start and end dates, the markup applied, and the associated room types
+ * for the contract.</p>
+ */
 @Entity
-public class HotelContract
-{
+public class HotelContract {
+
+    /**
+     * The unique identifier for the hotel contract.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contractId;
+
+    /**
+     * The name of the hotel associated with this contract.
+     */
     private String hotelName;
+
+    /**
+     * The start date of the contract.
+     */
     private LocalDate startDate;
+
+    /**
+     * The end date of the contract.
+     */
     private LocalDate endDate;
+
+    /**
+     * The markup percentage applied to the contract.
+     */
     private float markup;
 
+    /**
+     * The list of room types associated with this contract.
+     * This is a one-to-many relationship with the {@link RoomType} entity.
+     */
     @OneToMany(mappedBy = "hotelContract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomType> roomTypes;
 
-
-    public Long getContractId()
-    {
+    /**
+     * Retrieves the contract ID.
+     *
+     * @return the contract ID.
+     */
+    public Long getContractId() {
         return contractId;
     }
 
-    public void setContractId( Long contractId )
-    {
+    /**
+     * Sets the contract ID.
+     *
+     * @param contractId the contract ID to set.
+     */
+    public void setContractId(Long contractId) {
         this.contractId = contractId;
     }
 
-    public String getHotelName()
-    {
+    /**
+     * Retrieves the hotel name.
+     *
+     * @return the hotel name.
+     */
+    public String getHotelName() {
         return hotelName;
     }
 
-    public void setHotelName( String hotelName )
-    {
+    /**
+     * Sets the hotel name.
+     *
+     * @param hotelName the hotel name to set.
+     */
+    public void setHotelName(String hotelName) {
         this.hotelName = hotelName;
     }
 
-    public LocalDate getStartDate()
-    {
+    /**
+     * Retrieves the start date of the contract.
+     *
+     * @return the start date of the contract.
+     */
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate( LocalDate startDate )
-    {
+    /**
+     * Sets the start date of the contract.
+     *
+     * @param startDate the start date to set.
+     */
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate()
-    {
+    /**
+     * Retrieves the end date of the contract.
+     *
+     * @return the end date of the contract.
+     */
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate( LocalDate endDate )
-    {
+    /**
+     * Sets the end date of the contract.
+     *
+     * @param endDate the end date to set.
+     */
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-
-
-    public float getMarkup()
-    {
+    /**
+     * Retrieves the markup percentage applied to the contract.
+     *
+     * @return the markup percentage.
+     */
+    public float getMarkup() {
         return markup;
     }
 
-    public void setMarkup( float markup )
-    {
+    /**
+     * Sets the markup percentage for the contract.
+     *
+     * @param markup the markup percentage to set.
+     */
+    public void setMarkup(float markup) {
         this.markup = markup;
     }
 
-    public List<RoomType> getRoomTypes()
-    {
+    /**
+     * Retrieves the list of room types associated with the contract.
+     *
+     * @return the list of room types.
+     */
+    public List<RoomType> getRoomTypes() {
         return roomTypes;
     }
 
-    public void setRoomTypes( List<RoomType> roomTypes )
-    {
+    /**
+     * Sets the list of room types for the contract.
+     *
+     * @param roomTypes the list of room types to set.
+     */
+    public void setRoomTypes(List<RoomType> roomTypes) {
         this.roomTypes = roomTypes;
     }
 
-    public HotelContract()
-    {
+    /**
+     * Default constructor for {@code HotelContract}.
+     */
+    public HotelContract() {
     }
 
-    public HotelContract( Long contractId, String hotelName, LocalDate startDate, LocalDate endDate, float markup, List<RoomType> roomTypes )
-    {
+    /**
+     * Constructs a {@code HotelContract} with the specified details.
+     *
+     * @param contractId the contract ID.
+     * @param hotelName the name of the hotel.
+     * @param startDate the start date of the contract.
+     * @param endDate the end date of the contract.
+     * @param markup the markup percentage applied to the contract.
+     * @param roomTypes the list of room types associated with the contract.
+     */
+    public HotelContract(Long contractId, String hotelName, LocalDate startDate, LocalDate endDate, float markup, List<RoomType> roomTypes) {
         this.contractId = contractId;
         this.hotelName = hotelName;
         this.startDate = startDate;
@@ -103,8 +185,4 @@ public class HotelContract
         this.markup = markup;
         this.roomTypes = roomTypes;
     }
-
-
-
-
 }

@@ -7,9 +7,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+/**
+ * Represents a room type associated with a hotel contract.
+ * This entity defines the attributes for a room type, including its price, availability, and maximum capacity.
+ */
 @Entity
-public class RoomType
-{
+public class RoomType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomtypeId;
@@ -23,12 +27,24 @@ public class RoomType
     private int numberofRooms;
     private int maxAdults;
 
-    public RoomType(){
-
+    /**
+     * Default constructor for RoomType.
+     * Initializes a new instance of RoomType without setting any attributes.
+     */
+    public RoomType() {
     }
 
-    public RoomType( long roomtypeId, HotelContract hotelContract, String roomtypeName, float baseprice, int numberofRooms, int maxAdults )
-    {
+    /**
+     * Constructs a new RoomType with the specified attributes.
+     *
+     * @param roomtypeId    the ID of the room type
+     * @param hotelContract the hotel contract associated with the room type
+     * @param roomtypeName  the name of the room type
+     * @param baseprice     the base price for the room type
+     * @param numberofRooms the number of rooms available for this room type
+     * @param maxAdults     the maximum number of adults that can stay in the room type
+     */
+    public RoomType(long roomtypeId, HotelContract hotelContract, String roomtypeName, float baseprice, int numberofRooms, int maxAdults) {
         this.roomtypeId = roomtypeId;
         this.hotelContract = hotelContract;
         this.roomtypeName = roomtypeName;
@@ -37,63 +53,111 @@ public class RoomType
         this.maxAdults = maxAdults;
     }
 
-    public long getRoomtypeId()
-    {
+    /**
+     * Gets the ID of the room type.
+     *
+     * @return the room type ID
+     */
+    public long getRoomtypeId() {
         return roomtypeId;
     }
 
-    public void setRoomtypeId( long roomtypeId )
-    {
+    /**
+     * Sets the ID of the room type.
+     *
+     * @param roomtypeId the room type ID to set
+     */
+    public void setRoomtypeId(long roomtypeId) {
         this.roomtypeId = roomtypeId;
     }
 
-    public HotelContract getHotelContract()
-    {
+    /**
+     * Gets the hotel contract associated with the room type.
+     *
+     * @return the hotel contract
+     */
+    public HotelContract getHotelContract() {
         return hotelContract;
     }
 
-    public void setHotelContract( HotelContract hotelContract )
-    {
+    /**
+     * Sets the hotel contract associated with the room type.
+     *
+     * @param hotelContract the hotel contract to set
+     */
+    public void setHotelContract(HotelContract hotelContract) {
         this.hotelContract = hotelContract;
     }
 
-    public String getRoomtypeName()
-    {
+    /**
+     * Gets the name of the room type.
+     *
+     * @return the room type name
+     */
+    public String getRoomtypeName() {
         return roomtypeName;
     }
 
-    public void setRoomtypeName( String roomtypeName )
-    {
+    /**
+     * Sets the name of the room type.
+     *
+     * @param roomtypeName the room type name to set
+     */
+    public void setRoomtypeName(String roomtypeName) {
         this.roomtypeName = roomtypeName;
     }
 
-    public float getBaseprice()
-    {
+    /**
+     * Gets the base price of the room type.
+     *
+     * @return the base price
+     */
+    public float getBaseprice() {
         return baseprice;
     }
 
-    public void setBaseprice( float baseprice )
-    {
+    /**
+     * Sets the base price of the room type.
+     *
+     * @param baseprice the base price to set
+     */
+    public void setBaseprice(float baseprice) {
         this.baseprice = baseprice;
     }
 
-    public int getNumberofRooms()
-    {
+    /**
+     * Gets the number of rooms available for this room type.
+     *
+     * @return the number of rooms
+     */
+    public int getNumberofRooms() {
         return numberofRooms;
     }
 
-    public void setNumberofRooms( int numberofRooms )
-    {
+    /**
+     * Sets the number of rooms available for this room type.
+     *
+     * @param numberofRooms the number of rooms to set
+     */
+    public void setNumberofRooms(int numberofRooms) {
         this.numberofRooms = numberofRooms;
     }
 
-    public int getMaxAdults()
-    {
+    /**
+     * Gets the maximum number of adults allowed in the room type.
+     *
+     * @return the maximum number of adults
+     */
+    public int getMaxAdults() {
         return maxAdults;
     }
 
-    public void setMaxAdults( int maxAdults )
-    {
+    /**
+     * Sets the maximum number of adults allowed in the room type.
+     *
+     * @param maxAdults the maximum number of adults to set
+     */
+    public void setMaxAdults(int maxAdults) {
         this.maxAdults = maxAdults;
     }
 }

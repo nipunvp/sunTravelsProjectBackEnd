@@ -15,23 +15,36 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Service class responsible for handling room type-related operations such as filtering room types
+ * based on the search criteria, validating search requests, and converting room type data into DTOs.
+ */
 @Service
-public class RoomTypeService
-{
+public class RoomTypeService {
+
     private final RoomTypeRepository roomRepository;
 
+    /**
+     * Constructor for RoomTypeService.
+     *
+     * @param roomRepository the repository for RoomType entities
+     */
     @Autowired
-    public RoomTypeService( RoomTypeRepository roomRepository )
-    {
+    public RoomTypeService(RoomTypeRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-
+    /**
+     * This method was the old method used for fetching available room types, which is no longer in use.
+     * It validated and filtered room types based on the search criteria.
+     *
+     * @param searchDto the search criteria including check-in date, number of nights, and room selections
+     * @return a list of RoomTypeSearchResultDto objects representing available room types
+     */
     public List<RoomTypeSearchResultDto> getAvailableRoomTypes(HotelSearchRequestDto searchDto) {
         //validateSearchRequest(searchDto);
 
@@ -48,12 +61,16 @@ public class RoomTypeService
                             .collect(Collectors.toList());
     }
 
-
-
     /**
-     * Filter room types by checking if contracts exist within the specified date range.
+     * Filters the given list of room types based on whether their associated contracts
+     * fall within the specified date range.
+     *
+     * @param roomTypes     the list of RoomType entities to filter
+     * @param checkInDate   the check-in date for the search
+     * @param checkOutDate  the check-out date for the search
+     * @return a filtered list of RoomType entities that meet the date range criteria
      */
-    private List<RoomType> filterRoomTypesByDateRange(List<RoomType> roomTypes, LocalDate checkInDate, LocalDate checkOutDate) {
+    public List<RoomType> filterRoomTypesByDateRange(List<RoomType> roomTypes, LocalDate checkInDate, LocalDate checkOutDate) {
         return roomTypes.stream()
                         .filter(roomType -> {
                             HotelContract contract = roomType.getHotelContract();
@@ -63,35 +80,54 @@ public class RoomTypeService
     }
 
     /**
-     * Check if the given date range (check-in to check-out) falls within a contract's start and end date.
+     * Checks if the provided date range (check-in to check-out) falls within the contract's start and end date.
+     *
+     * @param checkInDate    the check-in date
+     * @param checkOutDate   the check-out date
+     * @param contractStartDate the contract's start date
+     * @param contractEndDate   the contract's end date
+     * @return true if the date range is within the contract's start and end dates, false otherwise
      */
-    private boolean isDateInRange( LocalDate checkInDate, LocalDate checkOutDate, LocalDate contractStartDate, LocalDate contractEndDate) {
+    private boolean isDateInRange(LocalDate checkInDate, LocalDate checkOutDate, LocalDate contractStartDate, LocalDate contractEndDate) {
         return (checkInDate.isAfter(contractStartDate) || checkInDate.isEqual(contractStartDate)) &&
                        (checkOutDate.isBefore(contractEndDate) || checkOutDate.isEqual(contractEndDate));
     }
 
     /**
-     * Filter room types where max adults capacity is greater than or equal to the max adults in the selection.
+     * Filters the given list of room types by checking if the maximum adult capacity is greater than or equal
+     * to the maximum adults specified in the search selection.
+     *
+     * @param roomTypes           the list of RoomType entities to filter
+     * @param maxAdultsInSelection the maximum number of adults in the search selection
+     * @return a filtered list of RoomType entities that can accommodate the specified maximum adults
      */
-    private List<RoomType> filterRoomTypesByMaxAdults(List<RoomType> roomTypes, int maxAdultsInSelection) {
+    public List<RoomType> filterRoomTypesByMaxAdults(List<RoomType> roomTypes, int maxAdultsInSelection) {
         return roomTypes.stream()
                         .filter(roomType -> roomType.getMaxAdults() >= maxAdultsInSelection)
                         .collect(Collectors.toList());
     }
 
     /**
-     * Filter room types based on the total number of rooms requested.
+     * Filters the given list of room types based on whether the number of available rooms is greater than or equal
+     * to the total number of rooms requested in the search selection.
+     *
+     * @param roomTypes           the list of RoomType entities to filter
+     * @param totalRoomsRequested the total number of rooms requested in the search selection
+     * @return a filtered list of RoomType entities that meet the total room request criteria
      */
-    private List<RoomType> filterRoomTypesByTotalRooms(List<RoomType> roomTypes, int totalRoomsRequested) {
+    public List<RoomType> filterRoomTypesByTotalRooms(List<RoomType> roomTypes, int totalRoomsRequested) {
         return roomTypes.stream()
                         .filter(roomType -> roomType.getNumberofRooms() >= totalRoomsRequested)
                         .collect(Collectors.toList());
     }
 
-
-
-
-    //Validation of a searchRequest from the backend
+    /**
+     * Validates the search request to ensure that all required fields are properly filled
+     * and that the values are within acceptable ranges.
+     *
+     * @param searchDto the search request DTO to validate
+     * @throws InvalidSearchException if any validation checks fail
+     */
     private void validateSearchRequest(HotelSearchRequestDto searchDto) {
         LocalDate checkInDate = searchDto.getCheckInDate();
         int numberOfNights = searchDto.getNumberOfNights();
@@ -123,14 +159,15 @@ public class RoomTypeService
         }
     }
 
+    /**
+     * Fetches available room types based on the provided search criteria, and returns them as a list of DTOs.
+     *
+     * @param searchDto the search request DTO containing the criteria
+     * @return a list of NewRoomTypeSearchResultDto objects representing available room types
+     */
+    public List<NewRoomTypeSearchResultDto> getAvailableRoomTypesNew(HotelSearchRequestDto searchDto) {
+        validateSearchRequest(searchDto);
 
-
-
-
-
-
-
-    public List<NewRoomTypeSearchResultDto> getAvailableRoomTypesNew( HotelSearchRequestDto searchDto) {
         // Step 1: Validate and calculate the date range
         LocalDate checkInDate = searchDto.getCheckInDate();
         LocalDate checkOutDate = checkInDate.plusDays(searchDto.getNumberOfNights());
@@ -152,15 +189,14 @@ public class RoomTypeService
         return EntityToDtoConverter.HashMapToNewRoomTypeSearchResultDtoList(matchingRooms);
     }
 
-
-
     // Step 2: Fetch rooms filtered by date range
     private List<RoomType> fetchRoomTypesByDateRange(LocalDate checkInDate, LocalDate checkOutDate) {
         return roomRepository.findRoomTypesByDateRange(checkInDate, checkOutDate);
     }
 
+
     // Step 3: Group rooms by hotel name
-    private Map<String, List<RoomType>> groupRoomsByHotel(List<RoomType> rooms) {
+    public Map<String, List<RoomType>> groupRoomsByHotel(List<RoomType> rooms) {
         Map<String, List<RoomType>> roomsByHotel = new HashMap<>();
         for (RoomType room : rooms) {
             String hotelName = room.getHotelContract().getHotelName();
@@ -168,6 +204,7 @@ public class RoomTypeService
         }
         return roomsByHotel;
     }
+
 
     // Step 4: Find hotels that satisfy all selection criteria
     private Map<String, List<RoomType>> findMatchingRooms(Map<String, List<RoomType>> roomsByHotel, List<HotelSearchRequestDto.Selection> selections) {
@@ -217,9 +254,4 @@ public class RoomTypeService
 
         return finalSelectedRooms;
     }
-
-
-
-
-
 }
